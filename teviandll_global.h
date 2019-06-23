@@ -1,0 +1,12 @@
+#ifndef TEVIANDLL_GLOBAL_H
+#define TEVIANDLL_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(TEVIANDLL_LIBRARY)
+#  define TEVIANDLLSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define TEVIANDLLSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // TEVIANDLL_GLOBAL_H
