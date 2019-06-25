@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
     detectRequest.cpp \
+    jsonparser.cpp \
     loginrequest.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     detectRequest.h \
+    jsonparser.h \
     loginrequest.h \
     mainwindow.h \
     request.h \

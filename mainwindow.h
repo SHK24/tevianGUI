@@ -7,7 +7,8 @@
 #include <QTime>
 #include <QListWidgetItem>
 #include <teviandll.h>
-
+#include <QSettings>
+#include "jsonparser.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,12 @@ private slots:
 
     void on_processing_clicked();
 
+    void on_login_editingFinished();
+
+    void on_password_editingFinished();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void addLogRecord(QString record);
@@ -38,10 +45,16 @@ private:
     TevianDLL tev;
     QString token;
     QStringList images;
+    QMap<QString, FaceDescription> info;
+    QString lastFile;
+    QSettings * settings;
+    jsonParser parser;
 
     void loginSuccess(QString token);
     void requestError(QString errorMessage);
     void detectSuccess(QByteArray rawJSON);
+    void readSettings();
+    void processNextImage();
 };
 
 #endif // MAINWINDOW_H

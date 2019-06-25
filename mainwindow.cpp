@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&tev, &TevianDLL::loginSuccess,  this, &MainWindow::loginSuccess);
     connect(&tev, &TevianDLL::requestError,  this, &MainWindow::requestError);
     connect(&tev, &TevianDLL::detectSuccess, this, &MainWindow::detectSuccess);
+
+    settings = new QSettings("settings.ini");
+    readSettings();
 }
 
 MainWindow::~MainWindow()
@@ -60,19 +63,54 @@ void MainWindow::requestError(QString errorMessage)
 void MainWindow::detectSuccess(QByteArray rawJSON)
 {
     addLogRecord("Распознавание выполнено");
+    ui->progressBar->setValue(ui->progressBar->value() + 1);
 
     ui->faceData->setText(rawJSON);
+    info.insert(lastFile, parser.getFaceBox(rawJSON));
+
+//    QFile data("json.txt");
+//    data.open(QIODevice::WriteOnly);
+//    data.write(rawJSON);
+//    data.close();
 
     if(images.count() > 0)
     {
         images.removeFirst();
-        on_processing_clicked();
+        processNextImage();
+    }
+}
+
+void MainWindow::readSettings()
+{
+    ui->login->setText(settings->value("login").toString());
+    ui->password->setText(settings->value("password").toString());
+}
+
+void MainWindow::processNextImage()
+{
+    if(images.count() > 0)
+    {
+        tev.detect("https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true", images[0], token);
+        lastFile = images[0];
     }
 }
 
 void MainWindow::on_files_itemClicked(QListWidgetItem *item)
 {
-    addLogRecord("Ошибка: Сведения для данного изображения недоступны");
+    if(0) addLogRecord("Ошибка: Сведения для данного изображения недоступны");
+    else {
+
+        QString result = "";
+        int faceNumber = 1;
+        //foreach(FaceDescription infoItem, info.value(item->text()))
+        //{
+        //    result += "------" + QString(faceNumber) + "------";
+        result += info[item->text()].toString();
+        //    faceNumber++;
+        //}
+
+        ui->faceData->setText(result);
+    }
 }
 
 void MainWindow::on_doLogin_clicked()
@@ -82,6 +120,23 @@ void MainWindow::on_doLogin_clicked()
 
 void MainWindow::on_processing_clicked()
 {
-    if(images.count() > 0)
-        tev.detect("https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true", images[0], token);
+    ui->progressBar->setValue(0);
+    ui->progressBar->setMaximum(images.count());
+
+    processNextImage();
+}
+
+void MainWindow::on_login_editingFinished()
+{
+    settings->setValue("login", ui->login->text());
+}
+
+void MainWindow::on_password_editingFinished()
+{
+    settings->setValue("password", ui->login->text());
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->progressBar->setValue(ui->progressBar->value() + 1);
 }
