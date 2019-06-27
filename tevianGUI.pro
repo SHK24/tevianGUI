@@ -25,26 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    detectRequest.cpp \
     jsonparser.cpp \
-    loginrequest.cpp \
     main.cpp \
     mainwindow.cpp \
-    request.cpp
+    zoomview.cpp
 
 HEADERS += \
-    detectRequest.h \
     jsonparser.h \
-    loginrequest.h \
     mainwindow.h \
-    request.h \
-    teviandll.h \
-    teviandll_global.h
+    zoomview.h
 
 FORMS += \
         mainwindow.ui
 
-LIBS += "../../DLL/tevianDLL.dll"
+LIBS += "../../DLL/tevianDLLd.dll"
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

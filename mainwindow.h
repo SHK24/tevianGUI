@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QTime>
 #include <QListWidgetItem>
-#include <teviandll.h>
+#include "../../DLL/teviandll.h"
 #include <QSettings>
 #include "jsonparser.h"
 
@@ -37,6 +37,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_readToken_clicked();
+
 private:
     Ui::MainWindow *ui;
     void addLogRecord(QString record);
@@ -46,6 +48,7 @@ private:
     QString token;
     QStringList images;
     QMap<QString, FaceDescription> info;
+    QMap<QString, QString> urls;
     QString lastFile;
     QSettings * settings;
     jsonParser parser;

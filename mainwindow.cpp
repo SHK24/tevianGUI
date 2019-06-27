@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     settings = new QSettings("settings.ini");
     readSettings();
+
+    //ui->widget->setRectangle(0,0,100,100,"");
+
+    this->showMaximized();
 }
 
 MainWindow::~MainWindow()
@@ -52,6 +56,14 @@ void MainWindow::loginSuccess(QString token)
 {
     loginDone = true;
     this->token = token;
+
+    QFile credentials("credentials.txt");
+    credentials.open(QIODevice::WriteOnly);
+    credentials.write(token.toUtf8());
+    credentials.close();
+
+    ui->groupBox->setEnabled(true);
+
     addLogRecord("Вход выполнен!");
 }
 
@@ -105,6 +117,14 @@ void MainWindow::on_files_itemClicked(QListWidgetItem *item)
         //foreach(FaceDescription infoItem, info.value(item->text()))
         //{
         //    result += "------" + QString(faceNumber) + "------";
+
+        QPixmap pixmap(item->text());
+        ui->widget->setImage(pixmap);
+
+        QString infoText = "Age: " + QString::number(info[item->text()].age, 'f', 2);
+
+        ui->widget->setRectangle(info[item->text()].x, info[item->text()].y, info[item->text()].width, info[item->text()].height, infoText);
+
         result += info[item->text()].toString();
         //    faceNumber++;
         //}
@@ -139,4 +159,26 @@ void MainWindow::on_password_editingFinished()
 void MainWindow::on_pushButton_clicked()
 {
     ui->progressBar->setValue(ui->progressBar->value() + 1);
+}
+
+
+void MainWindow::on_readToken_clicked()
+{
+    QFile credentials("credentials.txt");
+    credentials.open(QIODevice::ReadOnly);
+    QString token = credentials.readAll();
+    credentials.close();
+
+
+    if(token.count() != 0)
+    {
+        this->token = token;
+        ui->groupBox->setEnabled(true);
+
+        addLogRecord("Токен обнаружен!");
+    }
+    else
+    {
+        addLogRecord("Токен не обнаружен!");
+    }
 }
