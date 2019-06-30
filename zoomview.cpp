@@ -24,10 +24,15 @@ ZoomView::ZoomView(QWidget *parent)
 {
     this->setScene(&scene);
 
+    //sceneBrush.setColor(Qt::GlobalColor::red);
+
     textItem = new QGraphicsTextItem();
+    textItem->setDefaultTextColor(QColor(Qt::GlobalColor::green));
+
     rectItem = new QGraphicsRectItem();
     pixmapItem = new QGraphicsPixmapItem();
 
+    this->scene.setBackgroundBrush(sceneBrush);
     this->scene.addItem(textItem);
     this->scene.addItem(rectItem);
     this->scene.addItem(pixmapItem);

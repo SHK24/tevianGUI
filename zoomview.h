@@ -1,8 +1,9 @@
 #ifndef ZOOMVIEW_H
 #define ZOOMVIEW_H
 
-#include <QDebug>
 #include <QRect>
+#include <QBrush>
+#include <QDebug>
 #include <QTimer>
 #include <QPixmap>
 #include <QWheelEvent>
@@ -15,8 +16,10 @@ class ZoomView : public QGraphicsView
 {
     QGraphicsPixmapItem * pixmapItem;
     QGraphicsTextItem * textItem;
-    QRectF * rect;
     QGraphicsRectItem * rectItem;
+
+    QBrush sceneBrush;
+
     QGraphicsScene scene;
     QTimer refreshTimer;
 

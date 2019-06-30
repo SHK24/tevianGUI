@@ -47,7 +47,6 @@ private:
     void addLogRecord(QString record);
 
     bool loginDone;
-    bool urlExist;
     TevianDLL tev;
     QString token;
     QStringList images;
@@ -61,7 +60,7 @@ private:
     void requestError(QString errorMessage);
     void detectSuccess(QByteArray rawJSON);
     void readSettings();
-    bool readURLs();
+    void readURLs();
     void processNextImage();
 };
 

@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     addLogRecord("Приложение запущено!");
 
     loginDone = false;
-    urlExist = false;
 
     connect(&tev, &TevianDLL::loginSuccess,  this, &MainWindow::loginSuccess);
     connect(&tev, &TevianDLL::requestError,  this, &MainWindow::requestError);
@@ -19,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     settings = new QSettings("settings.ini");
 
     readSettings();
-    urlExist = readURLs();
+    readURLs();
     //ui->widget->setRectangle(100,100,200,200,"Тестовый текст");
 
     this->showMaximized();
@@ -93,7 +92,7 @@ void MainWindow::readSettings()
     ui->password->setText(settings->value("password").toString());
 }
 
-bool MainWindow::readURLs()
+void MainWindow::readURLs()
 {
     QFile urlFile("urls.txt");
 
@@ -102,7 +101,7 @@ bool MainWindow::readURLs()
         addLogRecord("Ошибка: файл с URL не найден. Будут использованы URL по умолчанию");
         this->urls.insert("LOGIN_URL", "https://backend.facecloud.tevian.ru/api/v1/login");
         this->urls.insert("DETECT_URL", "https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true");
-        return false;
+        return;
     }
 
     QString urlBody = urlFile.readAll();
@@ -131,7 +130,7 @@ bool MainWindow::readURLs()
 
     addLogRecord("Файл с URL считан успешно!");
 
-    return true;
+    return;
 }
 
 void MainWindow::processNextImage()
@@ -214,7 +213,7 @@ void MainWindow::on_readToken_clicked()
     if(token.count() != 0)
     {
         this->token = token;
-        if(urlExist)ui->groupBox->setEnabled(true);
+        ui->groupBox->setEnabled(true);
 
         addLogRecord("Токен обнаружен!");
     }
