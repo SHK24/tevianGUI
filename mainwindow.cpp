@@ -10,14 +10,16 @@ MainWindow::MainWindow(QWidget *parent) :
     addLogRecord("Приложение запущено!");
 
     loginDone = false;
+    urlExist = false;
 
     connect(&tev, &TevianDLL::loginSuccess,  this, &MainWindow::loginSuccess);
     connect(&tev, &TevianDLL::requestError,  this, &MainWindow::requestError);
     connect(&tev, &TevianDLL::detectSuccess, this, &MainWindow::detectSuccess);
 
     settings = new QSettings("settings.ini");
-    readSettings();
 
+    readSettings();
+    urlExist = readURLs();
     //ui->widget->setRectangle(100,100,200,200,"Тестовый текст");
 
     this->showMaximized();
@@ -35,8 +37,6 @@ void MainWindow::on_fileChoose_clicked()
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
             tr("Выбор файлов для обработки"), "",
             tr("JPEG (*.jpg);;"));
-
-    int x = 0;
 
     addLogRecord("Файлов выбрано: " + QString::number(fileNames.count()));
 
@@ -93,11 +93,52 @@ void MainWindow::readSettings()
     ui->password->setText(settings->value("password").toString());
 }
 
+bool MainWindow::readURLs()
+{
+    QFile urlFile("urls.txt");
+
+    if(!urlFile.open(QIODevice::ReadOnly))
+    {
+        addLogRecord("Ошибка: файл с URL не найден. Будут использованы URL по умолчанию");
+        this->urls.insert("LOGIN_URL", "https://backend.facecloud.tevian.ru/api/v1/login");
+        this->urls.insert("DETECT_URL", "https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true");
+        return false;
+    }
+
+    QString urlBody = urlFile.readAll();
+    QStringList urls = urlBody.split("\r\n");
+
+    QStringList words;
+
+    foreach(QString url, urls)
+    {
+        words = url.split('\t');
+
+        if(words.count() < 2)
+        {
+            addLogRecord("Ошибка: неправильный формат URL в файле");
+            continue;
+        }
+
+        if((words[URL_PURPOSE] == "") || (words[URL_BODY] == ""))
+        {
+            addLogRecord("Ошибка: неправильный формат URL в файле");
+            continue;
+        }
+
+        this->urls.insert(words[URL_PURPOSE], words[URL_BODY]);
+    }
+
+    addLogRecord("Файл с URL считан успешно!");
+
+    return true;
+}
+
 void MainWindow::processNextImage()
 {
     if(images.count() > 0)
     {
-        tev.detect("https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true", images[0], token);
+        tev.detect(urls.value("DETECT_URL"), images[0], token);
         lastFile = images[0];
     }
     else {
@@ -129,7 +170,7 @@ void MainWindow::on_files_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_doLogin_clicked()
 {
-    tev.doLogin("https://backend.facecloud.tevian.ru/api/v1/login", ui->login->text(), ui->password->text());
+    tev.doLogin(urls.value("LOGIN_URL"), ui->login->text(), ui->password->text());
 }
 
 void MainWindow::on_processing_clicked()
@@ -173,7 +214,7 @@ void MainWindow::on_readToken_clicked()
     if(token.count() != 0)
     {
         this->token = token;
-        ui->groupBox->setEnabled(true);
+        if(urlExist)ui->groupBox->setEnabled(true);
 
         addLogRecord("Токен обнаружен!");
     }

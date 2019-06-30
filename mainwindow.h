@@ -10,6 +10,9 @@
 #include <QSettings>
 #include "jsonparser.h"
 
+#define URL_PURPOSE 0
+#define URL_BODY 1
+
 namespace Ui {
 class MainWindow;
 }
@@ -44,6 +47,7 @@ private:
     void addLogRecord(QString record);
 
     bool loginDone;
+    bool urlExist;
     TevianDLL tev;
     QString token;
     QStringList images;
@@ -57,6 +61,7 @@ private:
     void requestError(QString errorMessage);
     void detectSuccess(QByteArray rawJSON);
     void readSettings();
+    bool readURLs();
     void processNextImage();
 };
 
