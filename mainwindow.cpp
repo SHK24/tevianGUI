@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     settings = new QSettings("settings.ini");
     readSettings();
 
-    //ui->widget->setRectangle(0,0,100,100,"");
+    //ui->widget->setRectangle(100,100,200,200,"Тестовый текст");
 
     this->showMaximized();
 }
@@ -80,11 +80,6 @@ void MainWindow::detectSuccess(QByteArray rawJSON)
     ui->faceData->setText(rawJSON);
     info.insert(lastFile, parser.getFaceBox(rawJSON));
 
-//    QFile data("json.txt");
-//    data.open(QIODevice::WriteOnly);
-//    data.write(rawJSON);
-//    data.close();
-
     if(images.count() > 0)
     {
         images.removeFirst();
@@ -105,18 +100,17 @@ void MainWindow::processNextImage()
         tev.detect("https://backend.facecloud.tevian.ru/api/v1/detect?demographics=true", images[0], token);
         lastFile = images[0];
     }
+    else {
+        addLogRecord("Обработка выполнена!");
+    }
 }
 
 void MainWindow::on_files_itemClicked(QListWidgetItem *item)
 {
-    if(0) addLogRecord("Ошибка: Сведения для данного изображения недоступны");
+    if(!info.values(item->text()).count()) addLogRecord("Ошибка: Сведения для данного изображения недоступны");
     else {
 
         QString result = "";
-        int faceNumber = 1;
-        //foreach(FaceDescription infoItem, info.value(item->text()))
-        //{
-        //    result += "------" + QString(faceNumber) + "------";
 
         QPixmap pixmap(item->text());
         ui->widget->setImage(pixmap);
@@ -140,10 +134,16 @@ void MainWindow::on_doLogin_clicked()
 
 void MainWindow::on_processing_clicked()
 {
-    ui->progressBar->setValue(0);
-    ui->progressBar->setMaximum(images.count());
+    if(images.count() > 0)
+    {
+        ui->progressBar->setValue(0);
+        ui->progressBar->setMaximum(images.count());
 
-    processNextImage();
+        processNextImage();
+    }
+    else {
+        addLogRecord("Ошибка: изображения не выбраны!");
+    }
 }
 
 void MainWindow::on_login_editingFinished()

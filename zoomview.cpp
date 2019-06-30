@@ -15,7 +15,9 @@ ZoomView::ZoomView()
 
 ZoomView::~ZoomView()
 {
-
+    delete textItem;
+    delete rectItem;
+    delete  pixmapItem;
 }
 
 ZoomView::ZoomView(QWidget *parent)
@@ -49,7 +51,7 @@ void ZoomView::setRectangle(int x, int y, int width, int height, QString text)
 
     rectItem->setRect(x,y,width,height);
     textItem->setPlainText(text);
-    textItem->setPos(x,y);
+    textItem->setPos(x,y+height);
 }
 
 void ZoomView::wheelEvent(QWheelEvent *event)
@@ -61,13 +63,13 @@ void ZoomView::wheelEvent(QWheelEvent *event)
         if(numDegrees.y() > 0)
         {
             scale(2.0,2.0);
-            textItem->setScale(textItem->scale() * 1.3);
+            textItem->setScale(textItem->scale() / 1.1);
             this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
             //this->scene.addItem(textItem);
         }
         else
         {
-           textItem->setScale(textItem->scale() / 1.3);
+           textItem->setScale(textItem->scale() * 1.1);
            this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
            scale(0.5,0.5);
         }
