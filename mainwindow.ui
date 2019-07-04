@@ -18,20 +18,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QLabel" name="label_2">
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Пароль</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="7">
+    <item row="0" column="6">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -60,22 +47,6 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0" colspan="8">
-     <widget class="QProgressBar" name="progressBar">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="textVisible">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="maximumSize">
@@ -89,7 +60,68 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="9">
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Пароль</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="7">
+     <widget class="QProgressBar" name="progressBar">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="textVisible">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4" colspan="3">
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Визуализация</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="ZoomView" name="widget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="readToken">
+      <property name="text">
+       <string>Считать токен</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QPushButton" name="doLogin">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Вход</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="8">
      <widget class="QTextEdit" name="log">
       <property name="maximumSize">
        <size>
@@ -208,51 +240,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="5">
-     <widget class="QPushButton" name="doLogin">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Вход</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4" colspan="4">
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="title">
-       <string>Визуализация</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="ZoomView" name="widget" native="true"/>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QPushButton" name="pushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="readToken">
-      <property name="text">
-       <string>Считать токен</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>
@@ -265,6 +252,17 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>login</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>readToken</tabstop>
+  <tabstop>doLogin</tabstop>
+  <tabstop>fileChoose</tabstop>
+  <tabstop>processing</tabstop>
+  <tabstop>files</tabstop>
+  <tabstop>faceData</tabstop>
+  <tabstop>log</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -26,34 +26,58 @@ public:
     ~MainWindow();
 
 private slots:
+    ///Слот обработки нажатия на кнопку выбора файлов
     void on_fileChoose_clicked();
 
-    void on_files_itemClicked(QListWidgetItem *item);
-
+    ///Слот обработки нажатия на кнопку входа
     void on_doLogin_clicked();
 
+    ///Слот обработки нажатия на кнопку обработки
     void on_processing_clicked();
 
+    ///Слот обработки события завершения редактирования строки имени пользователя
     void on_login_editingFinished();
 
+    ///Слот обработки события завершения редактирования строки пароля
     void on_password_editingFinished();
 
-    void on_pushButton_clicked();
-
+    ///Слот обработки события завершения редактирования чтения токена
     void on_readToken_clicked();
+
+    ///Слот обработки события выбора файла из списка
+    void on_files_itemClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
+
+    ///Метод добавления записи в журнал
     void addLogRecord(QString record);
 
+    ///Флаг выполнения авторизации
     bool loginDone;
+
+    ///Экземпляр для обмена данными с сервером
     TevianDLL tev;
+
+    ///Токен пользователя
     QString token;
+
+    ///Список изображений для обработки
     QStringList images;
+
+    ///Словарь для хранения информации об изображении
     QMap<QString, FaceDescription> info;
+
+    ///URLы для выполнения запросов
     QMap<QString, QString> urls;
+
+    ///Имя последнего обработанного файла
     QString lastFile;
+
+    ///Файл хранения настроек
     QSettings * settings;
+
+    ///Экземпляр разборщика JSON данных
     jsonParser parser;
 
     ///Таймер ожидания ответа
@@ -62,11 +86,22 @@ private:
     ///Обработчик таймаута ответа
     void responseTimeout();
 
+    ///Метод обработки сигнала об успешной авторизации
     void loginSuccess(QString token);
+
+    ///Метод обработки сигнала об ошибке запроса
     void requestError(QString errorMessage);
+
+    ///Метод обработки сигнала об успешной обработке изображения
     void detectSuccess(QByteArray rawJSON);
+
+    ///Метод чтения настроек из файла
     void readSettings();
+
+    ///Метод чтения URL из файла
     void readURLs();
+
+    ///Метод для выполнения запроса обработки следующего изображения
     void processNextImage();
 };
 
