@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QTime>
 #include <QListWidgetItem>
-#include "../../DLL/teviandll.h"
+#include "teviandll.h"
 #include <QSettings>
 #include "jsonparser.h"
 
