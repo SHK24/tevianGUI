@@ -7,14 +7,25 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+///Структура описывающая параметры лица найденного на изображении
 struct FaceDescription
 {
+    ///Признак действительности данных
     bool status = false;
+
+    ///Координаты x и y левого верхнего угла прямоугольника
     int x,y;
+
+    ///Ширина и высота прямоугольника
     int width, height;
+
+    ///Возраст
     float age;
+
+    ///СКО возраста
     float variance;
 
+    ///Метод преобразования данных структуры в строку
     const QString toString()
     {
         QString descriptionStr = "";
@@ -32,9 +43,13 @@ struct FaceDescription
 class jsonParser
 {
 public:
+    ///Конструктор
     jsonParser();
 
+    ///Функция выделения токена из ответа
     QString getToken(QByteArray replyBody);
+
+    ///Функция выделения параметров лица из ответа
     FaceDescription getFaceBox(QByteArray replyBody);
 };
 

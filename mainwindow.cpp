@@ -51,6 +51,12 @@ void MainWindow::addLogRecord(QString record)
     ui->log->append(QTime::currentTime().toString("<hh:mm:ss>") + record);
 }
 
+void MainWindow::responseTimeout()
+{
+    addLogRecord("Ошибка: время ожидания ответа превышено");
+    responseTimer.stop();
+}
+
 void MainWindow::loginSuccess(QString token)
 {
     loginDone = true;
@@ -138,9 +144,11 @@ void MainWindow::processNextImage()
     if(images.count() > 0)
     {
         tev.detect(urls.value("DETECT_URL"), images[0], token);
+        responseTimer.start(10000);
         lastFile = images[0];
     }
     else {
+        ui->files->setCurrentRow(0);
         addLogRecord("Обработка выполнена!");
     }
 }
@@ -170,6 +178,7 @@ void MainWindow::on_files_itemClicked(QListWidgetItem *item)
 void MainWindow::on_doLogin_clicked()
 {
     tev.doLogin(urls.value("LOGIN_URL"), ui->login->text(), ui->password->text());
+    responseTimer.start(10000);
 }
 
 void MainWindow::on_processing_clicked()

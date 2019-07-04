@@ -56,6 +56,12 @@ private:
     QSettings * settings;
     jsonParser parser;
 
+    ///Таймер ожидания ответа
+    QTimer responseTimer;
+
+    ///Обработчик таймаута ответа
+    void responseTimeout();
+
     void loginSuccess(QString token);
     void requestError(QString errorMessage);
     void detectSuccess(QByteArray rawJSON);
