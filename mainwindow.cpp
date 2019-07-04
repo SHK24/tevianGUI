@@ -71,9 +71,11 @@ void MainWindow::responseTimeout()
     responseTimer.stop();
 }
 
-void MainWindow::loginSuccess(QString token)
+void MainWindow::loginSuccess(QByteArray jsonData)
 {
     loginDone = true;
+    QString token = parser.getToken(jsonData);
+
     this->token = token;
 
     ///Сохранение токена в файл
@@ -91,6 +93,7 @@ void MainWindow::loginSuccess(QString token)
 void MainWindow::requestError(QString errorMessage)
 {
     addLogRecord("Ошибка: " + errorMessage);
+    responseTimer.stop();
 }
 
 void MainWindow::detectSuccess(QByteArray rawJSON)

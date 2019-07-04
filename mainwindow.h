@@ -87,7 +87,7 @@ private:
     void responseTimeout();
 
     ///Метод обработки сигнала об успешной авторизации
-    void loginSuccess(QString token);
+    void loginSuccess(QByteArray jsonData);
 
     ///Метод обработки сигнала об ошибке запроса
     void requestError(QString errorMessage);
