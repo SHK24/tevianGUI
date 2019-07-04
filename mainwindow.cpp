@@ -85,6 +85,7 @@ void MainWindow::loginSuccess(QString token)
     ui->groupBox->setEnabled(true);
 
     addLogRecord("Вход выполнен!");
+    responseTimer.stop();
 }
 
 void MainWindow::requestError(QString errorMessage)
@@ -114,6 +115,7 @@ void MainWindow::detectSuccess(QByteArray rawJSON)
         ///Запрос на обработку следующего изображения
         processNextImage();
     }
+    responseTimer.stop();
 }
 
 void MainWindow::readSettings()
